@@ -4,6 +4,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+/**
+ * DaoFactory is the pattern AbstractFactory that create a DAO patterns for working with DB.
+ */
 public class DAOFactory {
     private static DAOFactory instance = new DAOFactory();
     private UserDao userDao;

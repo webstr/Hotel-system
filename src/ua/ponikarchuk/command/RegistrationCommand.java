@@ -7,6 +7,10 @@ import ua.ponikarchuk.model.User;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * RegistrationCommand is the pattern Command.
+ * This Command registration new user on input data, also check for usage of current login.
+ */
 public class RegistrationCommand implements Command {
     @Override
     public String execute(IRequestWrapper wrapper) {

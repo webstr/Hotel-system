@@ -1,16 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="header.jsp"/>
-<p>Your applications</p>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.ponikarchuk.resources.text" />
+
+<p><fmt:message key="yourApplications" /></p>
 <table class="table table-striped">
     <tr>
         <th>Id</th>
-        <th>Size</th>
-        <th>Type</th>
-        <th>Duration</th>
-        <th>Status</th>
-        <th>Pay</th>
+        <th><fmt:message key="size" /></th>
+        <th><fmt:message key="type" /></th>
+        <th><fmt:message key="duration" /></th>
+        <th><fmt:message key="status" /></th>
+        <th><fmt:message key="pay" /></th>
         <c:if test="${sessionScope.user_role==2}">
-            <th>Check application</th>
+            <th><fmt:message key="checkApplication" /></th>
         </c:if>
     </tr>
     <c:forEach var="application" items="${sessionScope.applications}">
@@ -22,13 +26,12 @@
             <td>${application.getStatus().toString()}</td>
             <td>
                 <c:if test="${application.getStatus().toString()=='INPROGRESS'}">
-                    <a href="payApplication?id_application=${application.getId()}"> Pay this </a>
+                    <a href="payApplication?id_application=${application.getId()}"> <fmt:message key="pay" /> </a>
                 </c:if>
             </td>
             <td>
                 <c:if test="${sessionScope.user_role==2 && application.getStatus().toString()=='OPEN'}">
-                    <a href="checkApplication?id_application=${application.getId()}"> Check
-                        application ${application.getId()}</a>
+                    <a href="checkApplication?id_application=${application.getId()}"> <fmt:message key="checkApplication" /> ${application.getId()}</a>
                 </c:if>
             </td>
         </tr>

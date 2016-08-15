@@ -9,6 +9,10 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * LoginCommand is the pattern Command.
+ * This Command check login and password, and then push user into session. if it valid.
+ */
 public class LoginCommand implements Command {
     @Override
     public String execute(IRequestWrapper wrapper) {

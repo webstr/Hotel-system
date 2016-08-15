@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO for working with entity Application.
+ */
 public class ApplicationDao {
     DataSource dataSource;
 
@@ -15,6 +18,10 @@ public class ApplicationDao {
         this.dataSource = dataSource;
     }
 
+    /**
+     * Select all applications
+     * @return List of all applications
+     */
     public List<Application> getAll() {
         final String SQL_GET_ALL = "SELECT * FROM application;";
         List<Application> applications = new ArrayList<>();
@@ -40,6 +47,11 @@ public class ApplicationDao {
         return applications;
     }
 
+    /**
+     * Select all application for current user
+     * @param user For this user selected applications
+     * @return List of applications for input user
+     */
     public List<Application> getApplicationsByUser(User user) {
         final String SQL = "SELECT * FROM application WHERE id_user = ?";
         List<Application> applications = new ArrayList<>();
@@ -66,6 +78,11 @@ public class ApplicationDao {
         return applications;
     }
 
+    /**
+     * Select application on id
+     * @param id Application id
+     * @return Application with this id
+     */
     public Application getApplicationsById(int id) {
         final String SQL = "SELECT * FROM application WHERE id = ?";
         Application application = new Application();
@@ -90,6 +107,10 @@ public class ApplicationDao {
         return application;
     }
 
+    /**
+     * Save application into DB
+     * @param application Application to save
+     */
     public void saveApplication(Application application) {
         final String SQL =
                 "INSERT INTO application (size, type, duration, status, id_bill, id_user, id_room) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -118,6 +139,11 @@ public class ApplicationDao {
         }
     }
 
+    /**
+     * Update information about room in application
+     * @param application application to update
+     * @param idRoom Id room, that coonect with application
+     */
     public void updateIdRoom(Application application, int idRoom) {
         final String SQL =
                 "UPDATE application SET id_room=? WHERE id=?;";
@@ -133,6 +159,10 @@ public class ApplicationDao {
         }
     }
 
+    /**
+     * Update the status of application
+     * @param application input application
+     */
     public void updateStatus(Application application) {
         setNextStatus(application);
         final String SQL =

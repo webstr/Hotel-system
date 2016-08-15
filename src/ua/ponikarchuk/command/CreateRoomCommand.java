@@ -11,6 +11,10 @@ import ua.ponikarchuk.model.User;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * CreateRoomCommand is the pattern Command.
+ * This Command create room with current parameters.
+ */
 public class CreateRoomCommand implements Command {
     @Override
     public String execute(IRequestWrapper wrapper) {

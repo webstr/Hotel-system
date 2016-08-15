@@ -9,6 +9,10 @@ import ua.ponikarchuk.model.User;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * CreateApplicationCommand is the pattern Command.
+ * This Command create application with current parameters, and connect it with User.
+ */
 public class CreateApplicationCommand implements Command {
     @Override
     public String execute(IRequestWrapper wrapper) {

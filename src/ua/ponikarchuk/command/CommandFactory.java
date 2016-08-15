@@ -6,6 +6,10 @@ import ua.ponikarchuk.controller.IRequestWrapper;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * CommandFactory is the creation pattern that produce Command's.
+ * This factory based on parameter action in POST request.
+ */
 public class CommandFactory {
     private final static CommandFactory instance = new CommandFactory();
 

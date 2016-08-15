@@ -1,5 +1,8 @@
 package ua.ponikarchuk.controller;
 
+import ua.ponikarchuk.command.Command;
+import ua.ponikarchuk.command.CommandFactory;
+import ua.ponikarchuk.command.CommandFactoryApplication;
 import ua.ponikarchuk.dao.ApplicationDao;
 import ua.ponikarchuk.dao.DAOFactory;
 import ua.ponikarchuk.dao.RoomDao;
@@ -16,86 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller that give wrapper in command, and take back path. Only for GET request.
+ */
 public class ControllerApplication extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getServletPath().equals("/viewApplications")) {
-            String userLogin = (String) request.getSession().getAttribute("user");
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDao userDao = factory.getUserDAO();
-            User user = userDao.getUserByLogin(userLogin);
-
-            ApplicationDao applicationDao = factory.getApplicationDAO();
-            List<Application> applications = applicationDao.getApplicationsByUser(user);
-
-            request.getSession().setAttribute("applications", applications);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/viewApplications.jsp");
-            dispatcher.forward(request, response);
-        } else if (request.getServletPath().equals("/viewAllApplications")) {
-            String userLogin = (String) request.getSession().getAttribute("user");
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDao userDao = factory.getUserDAO();
-            User user = userDao.getUserByLogin(userLogin);
-
-            if (user != null && user.getIdRole() == 2) {
-                ApplicationDao applicationDao = factory.getApplicationDAO();
-                List<Application> applications = applicationDao.getAll();
-
-                request.getSession().setAttribute("applications", applications);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/viewApplications.jsp");
-                dispatcher.forward(request, response);
-            }
-        } else if (request.getServletPath().equals("/checkApplication")) {
-            String userLogin = (String) request.getSession().getAttribute("user");
-            int idApplication = Integer.parseInt(request.getParameter("id_application"));
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDao userDao = factory.getUserDAO();
-            User user = userDao.getUserByLogin(userLogin);
-
-            ApplicationDao applicationDao = factory.getApplicationDAO();
-            Application application = applicationDao.getApplicationsById(idApplication);
-
-            if (user != null && user.getIdRole() == 2) {
-                RoomDao roomDao = factory.getRoomDAO();
-                List<Room> rooms = roomDao.getAll();
-
-                request.getSession().setAttribute("application", application);
-                request.getSession().setAttribute("rooms", rooms);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/checkApplication.jsp");
-                dispatcher.forward(request, response);
-            }
-        } else if (request.getServletPath().equals("/chooseRoom")) {
-            String userLogin = (String) request.getSession().getAttribute("user");
-            int idApplication = Integer.parseInt(request.getParameter("id_application"));
-            int idRoom = Integer.parseInt(request.getParameter("id_room"));
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDao userDao = factory.getUserDAO();
-            User user = userDao.getUserByLogin(userLogin);
-
-            ApplicationDao applicationDao = factory.getApplicationDAO();
-            Application application = applicationDao.getApplicationsById(idApplication);
-
-            applicationDao.updateIdRoom(application, idRoom);
-            applicationDao.updateStatus(application);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/");
-            dispatcher.forward(request, response);
-
-        } else if (request.getServletPath().equals("/payApplication")) {
-            String userLogin = (String) request.getSession().getAttribute("user");
-            int idApplication = Integer.parseInt(request.getParameter("id_application"));
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDao userDao = factory.getUserDAO();
-            User user = userDao.getUserByLogin(userLogin);
-
-            ApplicationDao applicationDao = factory.getApplicationDAO();
-            Application application = applicationDao.getApplicationsById(idApplication);
-
-            applicationDao.updateStatus(application);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/");
-            dispatcher.forward(request, response);
-        }
+        IRequestWrapper wrapper = new RequestWrapper(request);
+        CommandFactoryApplication factory = CommandFactoryApplication.getInstance();
+        Command command = factory.getCommand(wrapper);
+        String viewPath = command.execute(wrapper);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(viewPath);
+        dispatcher.forward(request, response);
     }
 
     @Override

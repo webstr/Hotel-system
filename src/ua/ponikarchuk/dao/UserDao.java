@@ -7,6 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO for working with entity User.
+ */
 public class UserDao {
     DataSource dataSource;
 

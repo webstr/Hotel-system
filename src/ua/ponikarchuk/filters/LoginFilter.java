@@ -2,7 +2,11 @@ package ua.ponikarchuk.filters;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.Objects;
 
+/**
+ * Filter check for validate filled of login form.
+ */
 public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -14,7 +18,7 @@ public class LoginFilter implements Filter {
         String login = servletRequest.getParameter("login");
         String password = servletRequest.getParameter("password");
 
-        if (login == null || password == null) {
+        if (login == null || "".equals(login) || password == null || "".equals(password)) {
             servletRequest.setAttribute("incorrect", true);
         }
 
