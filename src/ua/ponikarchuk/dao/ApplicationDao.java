@@ -1,5 +1,7 @@
 package ua.ponikarchuk.dao;
 
+import org.apache.log4j.Logger;
+import ua.ponikarchuk.logger.CustomLogger;
 import ua.ponikarchuk.model.Application;
 import ua.ponikarchuk.model.User;
 
@@ -8,22 +10,33 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * DAO for working with entity Application.
  */
 public class ApplicationDao {
+
     DataSource dataSource;
 
     public ApplicationDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+
+
     /**
      * Select all applications
      * @return List of all applications
      */
     public List<Application> getAll() {
-        final String SQL_GET_ALL = "SELECT * FROM application;";
+
+        /* Test CustomLogger
+        CustomLogger customLogger = CustomLogger.getCustomLogger();
+        Logger logger = customLogger.getLogger();
+        */
+
+
+        final String SQL_GET_ALL = "SELECT * FROM application ORDER BY id DESC;";
         List<Application> applications = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
@@ -53,7 +66,7 @@ public class ApplicationDao {
      * @return List of applications for input user
      */
     public List<Application> getApplicationsByUser(User user) {
-        final String SQL = "SELECT * FROM application WHERE id_user = ?";
+        final String SQL = "SELECT * FROM application WHERE id_user = ? ORDER BY id DESC;";
         List<Application> applications = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(SQL)) {

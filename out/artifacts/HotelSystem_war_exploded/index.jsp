@@ -6,4 +6,6 @@
 
 <p><fmt:message key="helloPage" /></p>
 
+
+
 <jsp:include page="footer.jsp" />

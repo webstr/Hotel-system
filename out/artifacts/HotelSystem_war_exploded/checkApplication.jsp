@@ -4,6 +4,8 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="ua.ponikarchuk.resources.text" />
 
+<%@ taglib prefix="tr" tagdir="/WEB-INF/tags" %>
+
 <p><fmt:message key="choosenApplication" /></p>
 <table class="table table-striped">
     <tr>
@@ -13,14 +15,10 @@
         <th><fmt:message key="duration" /></th>
         <th><fmt:message key="status" /></th>
     </tr>
-        <tr>
-            <td>${sessionScope.application.getId()}</td>
-            <td>${sessionScope.application.getSize()}</td>
-            <td>${sessionScope.application.getType()}</td>
-            <td>${sessionScope.application.getDuration()}</td>
-            <td>${sessionScope.application.getStatus().toString()}</td>
 
-        </tr>
+    <tr:mytable cell1="${sessionScope.application.getId()}" cell2="${sessionScope.application.getSize()}"
+                cell3="${sessionScope.application.getType()}" cell4="${sessionScope.application.getDuration()}"
+                cell5="${sessionScope.application.getStatus().toString()}"/>
 </table>
 
 <p>All rooms</p>
